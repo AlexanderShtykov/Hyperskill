@@ -1,0 +1,596 @@
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+    public static char[][] coord = new char[3][3];
+    public static boolean process = true;
+    public static int x, y;
+
+    public static void main(String[] args) {
+
+        makeEmptyField();
+        menu();
+
+    }
+
+    public static void makeEmptyField() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                coord[i][j] = ' ';
+            }
+        }
+    }
+
+    public static void printField() {
+        System.out.println("---------");
+        System.out.println("| " + coord[0][0] + " " + coord[0][1] + " " + coord[0][2] + " |");
+        System.out.println("| " + coord[1][0] + " " + coord[1][1] + " " + coord[1][2] + " |");
+        System.out.println("| " + coord[2][0] + " " + coord[2][1] + " " + coord[2][2] + " |");
+        System.out.println("---------");
+    }
+
+    public static void ask() {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter the coordinates: ");
+
+        try {
+            x = scan.nextInt();
+            y = scan.nextInt();
+            if ((x > 3) || (x < 1) || (y > 3) || (y < 1)) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                ask();
+            } else if ((coord[2 - (y - 1)][x - 1] == 'X') || (coord[2 - (y - 1)][x - 1] == 'O')) {
+                System.out.println("This cell is occupied! Choose another one!");
+                ask();
+            } else {
+                coord[2 - (y - 1)][x - 1] = 'X';
+                printField();
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("You should enter numbers!");
+            ask();
+        }
+    }
+
+    public static void ask2O() {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter the coordinates: ");
+
+        try {
+            x = scan.nextInt();
+            y = scan.nextInt();
+            if ((x > 3) || (x < 1) || (y > 3) || (y < 1)) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                ask2O();
+            } else if ((coord[2 - (y - 1)][x - 1] == 'X') || (coord[2 - (y - 1)][x - 1] == 'O')) {
+                System.out.println("This cell is occupied! Choose another one!");
+                ask2O();
+            } else {
+                coord[2 - (y - 1)][x - 1] = 'O';
+                printField();
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("You should enter numbers!");
+            ask2O();
+        }
+    }
+
+    public static void computerMove() {
+        Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if (coord[2 - (y - 1)][x - 1] == ' ') {
+            coord[2 - (y - 1)][x - 1] = 'O';
+            System.out.println("Making move level \"easy\"");
+            printField();
+        } else {
+            computerMove();
+        }
+    }
+
+    public static void computerMove2X() {
+        Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if (coord[2 - (y - 1)][x - 1] == ' ') {
+            coord[2 - (y - 1)][x - 1] = 'X';
+            System.out.println("Making move level \"easy\"");
+            printField();
+        } else {
+            computerMove2X();
+        }
+    }
+
+    public static void mediumMove() {
+
+        boolean bool = true;
+
+        for (int i = 0; i < 3; i++) {
+
+            if ((coord[i][0] == coord[i][1]) && (coord[i][0] != ' ') && (coord[i][2] == ' ')) {
+                coord[i][2] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[i][0] == coord[i][2]) && (coord[i][0] != ' ') && (coord[i][1] == ' ')) {
+                coord[i][1] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[i][1] == coord[i][2]) && (coord[i][1] != ' ') && (coord[i][0] == ' ')) {
+                coord[i][0] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+
+            }
+
+            if ((coord[0][i] == coord[1][i]) && (coord[0][i] != ' ') && (coord[2][i] == ' ')) {
+                coord[2][i] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[0][i] == coord[2][i]) && (coord[0][i] != ' ') && (coord[1][i] == ' ')) {
+                coord[1][i] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[1][i] == coord[2][i]) && (coord[1][i] != ' ') && (coord[0][i] == ' ')) {
+                coord[0][i] = 'O';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+        }
+
+        if ((coord[0][0] == coord[1][1]) && (coord[2][2] == ' ') && (bool) && (coord[0][0] != ' ')) {
+            coord[2][2] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[0][0] == coord[2][2]) && (coord[1][1] == ' ') && (bool) && (coord[0][0] != ' ')) {
+            coord[1][1] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[1][1] == coord[2][2]) && (coord[0][0] == ' ') && (bool) && (coord[1][1] != ' ')) {
+            coord[0][0] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[0][2] == coord[1][1]) && (coord[2][0] == ' ') && (bool) && (coord[0][2] != ' ')) {
+            coord[2][0] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[2][0] == coord[1][1]) && (coord[0][2] == ' ') && (bool) && (coord[2][0] != ' ')) {
+            coord[0][2] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if (bool) {
+            mediumRandomMove();
+        }
+
+        /*Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if ((coord[2 - (y - 1)][x - 1] == ' ') && bool) {
+            coord[2 - (y - 1)][x - 1] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+        } else {
+            mediumMove();
+        }*/
+    }
+
+    public static void mediumRandomMove() {
+        Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if (coord[2 - (y - 1)][x - 1] == ' ') {
+            coord[2 - (y - 1)][x - 1] = 'O';
+            System.out.println("Making move level \"medium\"");
+            printField();
+        } else {
+            mediumRandomMove();
+        }
+    }
+
+    public static void mediumMove2X() {
+
+        boolean bool = true;
+
+        for (int i = 0; i < 3; i++) {
+
+            if ((coord[i][0] == coord[i][1]) && (coord[i][0] != ' ') && (coord[i][2] == ' ')) {
+                coord[i][2] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[i][0] == coord[i][2]) && (coord[i][0] != ' ') && (coord[i][1] == ' ')) {
+                coord[i][1] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[i][1] == coord[i][2]) && (coord[i][1] != ' ') && (coord[i][1] == ' ')) {
+                coord[i][0] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[0][i] == coord[1][i]) && (coord[0][i] != ' ') && (coord[2][i] == ' ')) {
+                coord[2][i] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[0][i] == coord[2][i]) && (coord[0][i] != ' ') && (coord[1][i] == ' ')) {
+                coord[1][i] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+
+            if ((coord[1][i] == coord[2][i]) && (coord[1][i] != ' ') && (coord[0][i] == ' ')) {
+                coord[0][i] = 'X';
+                System.out.println("Making move level \"medium\"");
+                printField();
+                bool = false;
+                break;
+            }
+        }
+
+        if ((coord[0][0] == coord[1][1]) && (coord[2][2] == ' ') && (bool) && (coord[0][0] != ' ')) {
+            coord[2][2] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[0][0] == coord[2][2]) && (coord[1][1] == ' ') && (bool) && (coord[0][0] != ' ')) {
+            coord[1][1] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[1][1] == coord[2][2]) && (coord[0][0] == ' ') && (bool) && (coord[1][1] != ' ')) {
+            coord[0][0] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[0][2] == coord[1][1]) && (coord[2][0] == ' ') && (bool) && (coord[0][2] != ' ')) {
+            coord[2][0] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if ((coord[2][0] == coord[1][1]) && (coord[0][2] == ' ') && (bool) && (coord[2][0] != ' ')) {
+            coord[0][2] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+            bool = false;
+        }
+
+        if (bool) {
+            mediumRandomMove2X();
+        }
+
+        /*Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if ((coord[2 - (y - 1)][x - 1] == ' ') && bool) {
+            coord[2 - (y - 1)][x - 1] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+        } else {
+            mediumMove2X();
+        }*/
+    }
+
+    public static void mediumRandomMove2X() {
+        Random random = new Random();
+        int x = (random.nextInt(3) + 1);
+        int y = (random.nextInt(3) + 1);
+        if (coord[2 - (y - 1)][x - 1] == ' ') {
+            coord[2 - (y - 1)][x - 1] = 'X';
+            System.out.println("Making move level \"medium\"");
+            printField();
+        } else {
+            mediumRandomMove2X();
+        }
+    }
+
+    public static void stateGame() {
+
+        int countHor = 0;
+        int countVert = 0;
+        boolean bool = true;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if ((coord[i][j] == coord[i][0]) && (coord[i][0] != ' ')) {
+                    countHor++;
+                }
+
+                if (coord[j][i] == coord[0][i] && (coord[0][i] != ' ')) {
+                    countVert++;
+                }
+            }
+
+            if (countHor == 3) {
+                System.out.println(coord[i][0] + " wins");
+                bool = false;
+                process = false;
+                break;
+            }
+            if (countVert == 3) {
+                System.out.println(coord[0][i] + " wins");
+                bool = false;
+                process = false;
+                break;
+            }
+            countHor = 0;
+            countVert = 0;
+        }
+
+        if ((coord[0][0] == coord[1][1]) && (coord[0][0] == coord[2][2]) && (bool) && (coord[0][0] != ' ')) {
+            System.out.println(coord[0][0] + " wins");
+            bool = false;
+            process = false;
+        }
+
+        if ((coord[0][2] == coord[1][1]) && (coord[0][2] == coord[2][0]) && (bool) && (coord[0][2] != ' ')) {
+            System.out.println(coord[0][2] + " wins");
+            bool = false;
+            process = false;
+        }
+
+        boolean b = true;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (coord[i][j] == ' ') {
+                    b = false;
+                    break;
+                }
+            }
+        }
+
+        if (bool && b) {
+            System.out.println("Draw");
+            process = false;
+        }
+    }
+
+    public static void menu() {
+        System.out.print("Input command: ");
+        Scanner input = new Scanner(System.in);
+        String str = input.nextLine();
+        switch (str) {
+            case "start easy easy":
+                printField();
+                aiVSai();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start easy user":
+                printField();
+                aiVSuser();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start user easy":
+                printField();
+                userVSai();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start user user":
+                printField();
+                userVSuser();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start medium medium":
+                printField();
+                mediumVSmedium();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start medium easy":
+                printField();
+                mediumVSai();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start easy medium":
+                printField();
+                aiVSmedium();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start user medium":
+                printField();
+                userVSmedium();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "start medium user":
+                printField();
+                mediumVSuser();
+                makeEmptyField();
+                process = true;
+                menu();
+                break;
+            case "exit":
+                break;
+            default:
+                System.out.println("Bad parameters!");
+                menu();
+                break;
+        }
+    }
+
+    public static void aiVSai() {
+        while (process) {
+            stateGame();
+            computerMove2X();
+            stateGame();
+            if (process) {
+                computerMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void aiVSuser() {
+        while (process) {
+            stateGame();
+            computerMove2X();
+            stateGame();
+            if (process) {
+                ask2O();
+                stateGame();
+            }
+        }
+    }
+
+    public static void userVSai() {
+        while (process) {
+            stateGame();
+            ask();
+            stateGame();
+            if (process) {
+                computerMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void userVSuser() {
+        while (process) {
+            stateGame();
+            ask();
+            stateGame();
+            if (process) {
+                ask2O();
+                stateGame();
+            }
+        }
+    }
+
+    public static void mediumVSmedium() {
+        while (process) {
+            stateGame();
+            mediumMove2X();
+            stateGame();
+            if (process) {
+                mediumMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void mediumVSai() {
+        while (process) {
+            stateGame();
+            mediumMove2X();
+            stateGame();
+            if (process) {
+                computerMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void aiVSmedium() {
+        while (process) {
+            stateGame();
+            computerMove2X();
+            stateGame();
+            if (process) {
+                mediumMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void userVSmedium() {
+        while (process) {
+            stateGame();
+            ask();
+            stateGame();
+            if (process) {
+                mediumMove();
+                stateGame();
+            }
+        }
+    }
+
+    public static void mediumVSuser() {
+        while (process) {
+            stateGame();
+            mediumMove2X();
+            stateGame();
+            if (process) {
+                ask2O();
+                stateGame();
+            }
+        }
+    }
+
+}
