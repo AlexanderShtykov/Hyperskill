@@ -1,0 +1,818 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+ 
+public class Main {
+ 
+    public static ArrayList<Double> income = new ArrayList<>();
+    public static ArrayList<String> list = new ArrayList<>();
+    public static ArrayList<String> food = new ArrayList<>();
+    public static ArrayList<Double> foodPrice = new ArrayList<>();
+    public static ArrayList<String> clothes = new ArrayList<>();
+    public static ArrayList<Double> clothesPrice = new ArrayList<>();
+    public static ArrayList<String> entertaiment = new ArrayList<>();
+    public static ArrayList<Double> entertaimentPrice = new ArrayList<>();
+    public static ArrayList<String> other = new ArrayList<>();
+    public static ArrayList<Double> otherPrice = new ArrayList<>();
+    public static double totalFood = 0;
+    public static double totalClothes = 0;
+    public static double totalEntertaiment = 0;
+    public static double totalOther = 0;
+    public static double total = 0;
+ 
+    public static void main(String[] args) {
+        menu();
+    }
+ 
+    public static void menu() {
+        System.out.println("Choose your action:");
+        System.out.println("1) Add income");
+        System.out.println("2) Add purchase");
+        System.out.println("3) Show list of purchases");
+        System.out.println("4) Balance");
+        System.out.println("5) Save");
+        System.out.println("6) Load");
+        System.out.println("7) Analyze (sort)");
+        System.out.println("0) Exit");
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        switch (n) {
+            case 1:
+                System.out.println("");
+                addIncome();
+                System.out.println("");
+                menu();
+                break;
+            case 2:
+                System.out.println("");
+                menuPurchase();
+                System.out.println("");
+                menu();
+                break;
+            case 3:
+                System.out.println("");
+                menuType();
+                System.out.println("");
+                menu();
+                break;
+            case 4:
+                System.out.println("");
+                getBalance();
+                System.out.println("");
+                menu();
+                break;
+            case 5:
+                System.out.println("");
+                save();
+                System.out.println("Purchases were saved!");
+                System.out.println("");
+                menu();
+                break;
+            case 6:
+                System.out.println("");
+                load();
+                System.out.println("Purchases were loaded!");
+                System.out.println("");
+                menu();
+                break;
+            case 7:
+                System.out.println("");
+                menuSort();
+                System.out.println("");
+            case 0:
+                System.out.println("");
+                System.out.println("Bye!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("");
+                System.out.println("Uncorrect Input");
+                System.out.println("");
+                menu();
+                break;
+        }
+    }
+ 
+    public static void addIncome() {
+        System.out.println("Enter income:");
+        Scanner sc = new Scanner(System.in);
+        income.add(sc.nextDouble());
+        System.out.println("Income was added!");
+    }
+ 
+    public static void menuPurchase() {
+        System.out.println("Choose the type of purchase");
+        System.out.println("1) Food");
+        System.out.println("2) Clothes");
+        System.out.println("3) Entertainment");
+        System.out.println("4) Other");
+        System.out.println("5) Back");
+        Scanner scann = new Scanner(System.in);
+        int n = scann.nextInt();
+        switch (n) {
+            case 1:
+                System.out.println("");
+                addFood();
+                System.out.println("");
+                menuPurchase();
+                break;
+            case 2:
+                System.out.println("");
+                addClothes();
+                System.out.println("");
+                menuPurchase();
+                break;
+            case 3:
+                System.out.println("");
+                addEntertaiment();
+                System.out.println("");
+                menuPurchase();
+                break;
+            case 4:
+                System.out.println("");
+                addOther();
+                System.out.println("");
+                menuPurchase();
+                break;
+            case 5:
+                System.out.println("");
+                menu();
+                break;
+            default:
+                System.out.println("");
+                System.out.println("Uncorrect Input");
+                System.out.println("");
+                menuPurchase();
+                break;
+        }
+    }
+ 
+    public static void menuType() {
+        if (food.size() == 0 && clothes.size() == 0 && entertaiment.size() == 0 && other.size() == 0) {
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("Choose your action:");
+            System.out.println("1) Food");
+            System.out.println("2) Clothes");
+            System.out.println("3) Entertainment");
+            System.out.println("4) Other");
+            System.out.println("5) All");
+            System.out.println("6) Back");
+            Scanner scann = new Scanner(System.in);
+            int n = scann.nextInt();
+            switch (n) {
+                case 1:
+                    System.out.println("");
+                    showFood();
+                    System.out.println("");
+                    menuType();
+                    break;
+                case 2:
+                    System.out.println("");
+                    showClothes();
+                    System.out.println("");
+                    menuType();
+                    break;
+                case 3:
+                    System.out.println("");
+                    showEntertaiment();
+                    System.out.println("");
+                    menuType();
+                    break;
+                case 4:
+                    System.out.println("");
+                    showOther();
+                    System.out.println("");
+                    menuType();
+                    break;
+                case 5:
+                    System.out.println("");
+                    showAll();
+                    System.out.println("");
+                    menuType();
+                    break;
+                case 6:
+                    System.out.println("");
+                    menu();
+                    break;
+                default:
+                    System.out.println("");
+                    System.out.println("Uncorrect Input");
+                    System.out.println("");
+                    menuPurchase();
+                    break;
+            }
+        }
+    }
+ 
+    public static void addFood() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter purchase name:");
+        food.add(scan.nextLine());
+        System.out.println("Enter its price:");
+        double f = scan.nextDouble();
+        foodPrice.add(f);
+        totalFood = totalFood + f;
+        total = total + f;
+        System.out.println("Purchase was added!");
+    }
+ 
+    public static void addClothes() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter purchase name:");
+        clothes.add(scan.nextLine());
+        System.out.println("Enter its price:");
+        double c = scan.nextDouble();
+        clothesPrice.add(c);
+        totalClothes = totalClothes + c;
+        total = total + c;
+        System.out.println("Purchase was added!");
+    }
+ 
+    public static void addEntertaiment() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter purchase name:");
+        entertaiment.add(scan.nextLine());
+        System.out.println("Enter its price:");
+        double e = scan.nextDouble();
+        entertaimentPrice.add(e);
+        totalEntertaiment = totalEntertaiment + e;
+        total = total + e;
+        System.out.println("Purchase was added!");
+    }
+ 
+    public static void addOther() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter purchase name:");
+        other.add(scan.nextLine());
+        System.out.println("Enter its price:");
+        double o = scan.nextDouble();
+        otherPrice.add(o);
+        totalOther = totalOther + o;
+        total = total + o;
+        System.out.println("Purchase was added!");
+    }
+ 
+    public static void showFood() {
+        if (food.size() == 0) {
+            System.out.println("Food:");
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("Food:");
+            for (int i = 0; i < food.size(); i++) {
+                System.out.print(food.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", foodPrice.get(i));
+                /*totalFood = totalFood + foodPrice.get(i);
+                total = total + totalFood;*/
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalFood);
+        }
+    }
+ 
+    public static void showClothes() {
+        if (clothes.size() == 0) {
+            System.out.println("Clothes:");
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("Clothes:");
+            for (int i = 0; i < clothes.size(); i++) {
+                System.out.print(clothes.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", clothesPrice.get(i));
+                /*totalClothes = totalClothes + clothesPrice.get(i);
+                total = total + totalClothes;*/
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalClothes);
+        }
+    }
+ 
+    public static void showEntertaiment() {
+        if (entertaiment.size() == 0) {
+            System.out.println("Entertainment:");
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("Entertaiment:");
+            for (int i = 0; i < entertaiment.size(); i++) {
+                System.out.print(entertaiment.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", entertaimentPrice.get(i));
+                /*totalEntertaiment = totalEntertaiment + entertaimentPrice.get(i);
+                total = total + totalEntertaiment;*/
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalEntertaiment);
+        }
+    }
+ 
+    public static void showOther() {
+        if (other.size() == 0) {
+            System.out.println("Other:");
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("Other:");
+            for (int i = 0; i < other.size(); i++) {
+                System.out.print(other.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", otherPrice.get(i));
+                /*totalOther = totalOther + otherPrice.get(i);
+                total = total + totalOther;*/
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalOther);
+        }
+    }
+ 
+    public static void showAll() {
+        if (food.size() == 0 && clothes.size() == 0 && entertaiment.size() == 0 && other.size() == 0) {
+            System.out.println("All:");
+            System.out.println("Purchase list is empty!");
+        } else {
+            System.out.println("All:");
+            for (int i = 0; i < food.size(); i++) {
+                System.out.print(food.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", foodPrice.get(i));
+            }
+            for (int i = 0; i < clothes.size(); i++) {
+                System.out.print(clothes.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", clothesPrice.get(i));
+            }
+            for (int i = 0; i < entertaiment.size(); i++) {
+                System.out.print(entertaiment.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", entertaimentPrice.get(i));
+            }
+            for (int i = 0; i < other.size(); i++) {
+                System.out.print(other.get(i));
+                System.out.print(" $");
+                System.out.printf("%.2f\n", otherPrice.get(i));
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", total);
+        }
+    }
+ 
+    public static void getBalance() {
+        double bal = 0;
+        for (int i = 0; i < income.size(); i++) {
+            bal = bal + income.get(i);
+        }
+        bal = bal - total;
+        if (bal < 0) {
+            System.out.print("Balance: $");
+            System.out.println("0.00");
+            System.out.println("");
+        } else {
+            System.out.print("Balance: $");
+            System.out.printf("%.2f\n", bal);
+        }
+    }
+ 
+    public static void save() {
+        double bal = 0;
+        for (int i = 0; i < income.size(); i++) {
+            bal = bal + income.get(i);
+        }
+        File file = new File("./purchases.txt");
+        try (PrintWriter printWriter = new PrintWriter(file)) {
+ 
+            printWriter.printf("%.2f\n", bal);
+            printWriter.printf("%.2f\n", totalFood);
+            printWriter.printf("%.2f\n", totalClothes);
+            printWriter.printf("%.2f\n", totalEntertaiment);
+            printWriter.printf("%.2f\n", totalOther);
+            printWriter.printf("%.2f\n", total);
+            printWriter.println(food.size());
+            printWriter.println(clothes.size());
+            printWriter.println(entertaiment.size());
+            printWriter.println(other.size());
+ 
+            for (int i = 0; i < food.size(); i++) {
+                printWriter.println(food.get(i));
+            }
+ 
+            for (int i = 0; i < food.size(); i++) {
+                printWriter.printf("%.2f\n", foodPrice.get(i));
+            }
+ 
+            for (int i = 0; i < clothes.size(); i++) {
+                printWriter.println(clothes.get(i));
+            }
+ 
+            for (int i = 0; i < clothes.size(); i++) {
+                printWriter.printf("%.2f\n", clothesPrice.get(i));
+            }
+ 
+            for (int i = 0; i < entertaiment.size(); i++) {
+                printWriter.println(entertaiment.get(i));
+            }
+ 
+            for (int i = 0; i < entertaiment.size(); i++) {
+                printWriter.printf("%.2f\n", entertaimentPrice.get(i));
+            }
+ 
+            for (int i = 0; i < other.size(); i++) {
+                printWriter.println(other.get(i));
+            }
+ 
+            for (int i = 0; i < other.size(); i++) {
+                printWriter.printf("%.2f\n", otherPrice.get(i));
+            }
+ 
+        } catch (IOException e) {
+            System.out.printf("An exception occurs %s", e.getMessage());
+        }
+    }
+ 
+    public static void load() {
+        String pathToFile = "./purchases.txt";
+        File file = new File(pathToFile);
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNext()) {
+                list.add(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("No file found: " + pathToFile);
+        }
+        loadToVariable();
+    }
+ 
+    public static void loadToVariable() {
+        income.add(Double.parseDouble(list.get(0)));
+        double tF = Double.parseDouble(list.get(1));
+        double tC = Double.parseDouble(list.get(2));
+        double tE = Double.parseDouble(list.get(3));
+        double tO = Double.parseDouble(list.get(4));
+        double t = Double.parseDouble(list.get(5));
+        totalFood = totalFood + tF;
+        totalClothes = totalClothes + tC;
+        totalEntertaiment = totalEntertaiment + tE;
+        totalOther = totalOther + tO;
+        total = total + t;
+        int cF = Integer.parseInt(list.get(6));
+        int cC = Integer.parseInt(list.get(7));
+        int cE = Integer.parseInt(list.get(8));
+        int cO = Integer.parseInt(list.get(9));
+        for (int i = 10; i < 10 + cF; i++) {
+            food.add(list.get(i));
+        }
+ 
+        for (int i = 10 + cF; i < 10 + cF + cF; i++) {
+            foodPrice.add(Double.parseDouble(list.get(i)));
+        }
+ 
+        for (int i = 10 + cF + cF; i < 10 + cF + cF + cC; i++) {
+            clothes.add(list.get(i));
+        }
+ 
+        for (int i = 10 + cF + cF + cC; i < 10 + cF + cF + cC + cC; i++) {
+            clothesPrice.add(Double.parseDouble(list.get(i)));
+        }
+ 
+        for (int i = 10 + cF + cF + cC + cC; i < 10 + cF + cF + cC + cC + cE; i++) {
+            entertaiment.add(list.get(i));
+        }
+ 
+        for (int i = 10 + cF + cF + cC + cC + cE; i < (10 + cF + cF + cC + cC + cE + cE); i++) {
+            entertaimentPrice.add(Double.parseDouble(list.get(i)));
+        }
+ 
+        for (int i = (10 + cF + cF + cC + cC + cE + cE); i < (10 + cF + cF + cC + cC + cE + cE + cO); i++) {
+            other.add(list.get(i));
+        }
+ 
+        for (int i = (10 + cF + cF + cC + cC + cE + cE + cO); i < (10 + cF + cF + cC + cC + cE + cE + cO + cO); i++) {
+            otherPrice.add(Double.parseDouble(list.get(i)));
+        }
+    }
+ 
+    public static void menuSort() {
+        System.out.println("How do you want to sort?");
+        System.out.println("1) Sort all purchases");
+        System.out.println("2) Sort by type");
+        System.out.println("3) Sort certain type");
+        System.out.println("4) Back");
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        switch (n) {
+            case 1:
+                System.out.println("");
+                sortAllPur();
+                System.out.println("");
+                menuSort();
+                break;
+            case 2:
+                System.out.println("");
+                sortByType();
+                System.out.println("");
+                menuSort();
+                break;
+            case 3:
+                System.out.println("");
+                sortCertainType();
+                System.out.println("");
+                menuSort();
+                break;
+            case 4:
+                System.out.println("");
+                menu();
+                break;
+            default:
+                System.out.println("");
+                System.out.println("Uncorrect Input");
+                System.out.println("");
+                menuSort();
+                break;
+        }
+    }
+ 
+    public static void sortAllPur() {
+        if (food.size() == 0 && clothes.size() == 0 && entertaiment.size() == 0 && other.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        } else {
+            System.out.println("All:");
+            sortAll();
+            System.out.println("");
+            menuSort();
+        }
+    }
+ 
+    public static void sortAll() {
+        String[] str = new String[food.size() + clothes.size() + entertaiment.size() + other.size()];
+        double[] pr = new double[food.size() + clothes.size() + entertaiment.size() + other.size()];
+        for (int i = 0; i < food.size(); i++) {
+            str[i] = food.get(i);
+            pr[i] = foodPrice.get(i);
+        }
+        for (int i = food.size(); i < food.size() + clothes.size(); i++) {
+            str[i] = clothes.get(i - food.size());
+            pr[i] = clothesPrice.get(i - foodPrice.size());
+        }
+        for (int i = food.size() + clothes.size(); i < food.size() + clothes.size() + entertaiment.size(); i++) {
+            str[i] = entertaiment.get(i - food.size() - clothes.size());
+            pr[i] = entertaimentPrice.get(i - foodPrice.size() - clothesPrice.size());
+        }
+        for (int i = food.size() + clothes.size() + entertaiment.size(); i < food.size() + clothes.size() + entertaiment.size() + other.size(); i++) {
+            str[i] = other.get(i - food.size() - clothes.size() - entertaiment.size());
+            pr[i] = otherPrice.get(i - foodPrice.size() - clothesPrice.size() - entertaimentPrice.size());
+        }
+ 
+        for (int i = 0; i < pr.length - 1; i++) {
+            for (int j = 0; j < pr.length - i - 1; j++) {
+                if (pr[j] < pr[j + 1]) {
+                    double temp = pr[j];
+                    pr[j] = pr[j + 1];
+                    pr[j + 1] = temp;
+                    String t = str[j];
+                    str[j] = str[j + 1];
+                    str[j + 1] = t;
+                }
+            }
+        }
+        //System.out.println("All:");
+        for (int i = 0; i < pr.length; i++) {
+            System.out.print(str[i]);
+            System.out.print(" $");
+            System.out.printf("%.2f\n", pr[i]);
+        }
+        System.out.print("Total: $");
+        System.out.printf("%.2f\n", total);
+    }
+ 
+    public static void sortByType() {
+        /*if (food.size() == 0 && clothes.size() == 0 && entertaiment.size() == 0 && other.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        }*/
+        System.out.println("Types:");
+        sortTypes();
+        System.out.println("");
+        menuSort();
+ 
+    }
+ 
+    public static void sortTypes() {
+        double[] array = new double[4];
+        String[] str = new String[4];
+        array[0] = totalFood;
+        array[1] = totalClothes;
+        array[2] = totalEntertaiment;
+        array[3] = totalOther;
+        str[0] = "Food";
+        str[1] = "Clothes";
+        str[2] = "Entertainment";
+        str[3] = "Other";
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (array[j] < array[j + 1]) {
+                    double temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                    String t = str[j];
+                    str[j] = str[j + 1];
+                    str[j + 1] = t;
+                }
+            }
+        }
+        //System.out.println("Types:");
+        for (int i = 0; i < 4; i++) {
+            System.out.print(str[i]);
+            System.out.print(" - $");
+            System.out.printf("%.2f\n", array[i]);
+        }
+        System.out.print("Total sum: $");
+        System.out.printf("%.2f\n", total);
+    }
+ 
+    public static void sortCertainType() {
+        System.out.println("Choose the type of purchase");
+        System.out.println("1) Food");
+        System.out.println("2) Clothes");
+        System.out.println("3) Entertainment");
+        System.out.println("4) Other");
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        switch (n) {
+            case 1:
+                System.out.println("");
+                sortFood();
+                System.out.println("");
+                menuSort();
+                break;
+            case 2:
+                System.out.println("");
+                sortClothes();
+                System.out.println("");
+                menuSort();
+                break;
+            case 3:
+                System.out.println("");
+                sortEntertainment();
+                System.out.println("");
+                menuSort();
+                break;
+            case 4:
+                System.out.println("");
+                sortOther();
+                System.out.println("");
+                menuSort();
+                break;
+            default:
+                System.out.println("");
+                System.out.println("Uncorrect Input");
+                System.out.println("");
+                sortCertainType();
+                break;
+        }
+    }
+ 
+    public static void sortFood() {
+        if (food.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        } else {
+            String[] str = new String[food.size()];
+            double[] pr = new double[foodPrice.size()];
+            for (int i = 0; i < food.size(); i++) {
+                str[i] = food.get(i);
+                pr[i] = foodPrice.get(i);
+            }
+            for (int i = 0; i < pr.length - 1; i++) {
+                for (int j = 0; j < pr.length - i - 1; j++) {
+                    if (pr[j] < pr[j + 1]) {
+                        double temp = pr[j];
+                        pr[j] = pr[j + 1];
+                        pr[j + 1] = temp;
+                        String t = str[j];
+                        str[j] = str[j + 1];
+                        str[j + 1] = t;
+                    }
+                }
+            }
+            System.out.println("Food:");
+            for (int i = 0; i < food.size(); i++) {
+                System.out.print(str[i]);
+                System.out.print(" $");
+                System.out.printf("%.2f\n", pr[i]);
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalFood);
+        }
+    }
+ 
+    public static void sortClothes() {
+        if (clothes.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        } else {
+            String[] str = new String[clothes.size()];
+            double[] pr = new double[clothesPrice.size()];
+            for (int i = 0; i < clothes.size(); i++) {
+                str[i] = clothes.get(i);
+                pr[i] = clothesPrice.get(i);
+            }
+            for (int i = 0; i < pr.length - 1; i++) {
+                for (int j = 0; j < pr.length - i - 1; j++) {
+                    if (pr[j] < pr[j + 1]) {
+                        double temp = pr[j];
+                        pr[j] = pr[j + 1];
+                        pr[j + 1] = temp;
+                        String t = str[j];
+                        str[j] = str[j + 1];
+                        str[j + 1] = t;
+                    }
+                }
+            }
+            System.out.println("Clothes:");
+            for (int i = 0; i < clothes.size(); i++) {
+                System.out.print(str[i]);
+                System.out.print(" $");
+                System.out.printf("%.2f\n", pr[i]);
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalClothes);
+        }
+    }
+ 
+    public static void sortEntertainment() {
+        if (entertaiment.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        } else {
+            String[] str = new String[entertaiment.size()];
+            double[] pr = new double[entertaimentPrice.size()];
+            for (int i = 0; i < entertaiment.size(); i++) {
+                str[i] = entertaiment.get(i);
+                pr[i] = entertaimentPrice.get(i);
+            }
+            for (int i = 0; i < pr.length - 1; i++) {
+                for (int j = 0; j < pr.length - i - 1; j++) {
+                    if (pr[j] < pr[j + 1]) {
+                        double temp = pr[j];
+                        pr[j] = pr[j + 1];
+                        pr[j + 1] = temp;
+                        String t = str[j];
+                        str[j] = str[j + 1];
+                        str[j + 1] = t;
+                    }
+                }
+            }
+            System.out.println("Entertainment:");
+            for (int i = 0; i < entertaiment.size(); i++) {
+                System.out.print(str[i]);
+                System.out.print(" $");
+                System.out.printf("%.2f\n", pr[i]);
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalEntertaiment);
+        }
+    }
+ 
+    public static void sortOther() {
+        if (other.size() == 0) {
+            System.out.println("Purchase list is empty!");
+            System.out.println("");
+            menuSort();
+        } else {
+            String[] str = new String[other.size()];
+            double[] pr = new double[otherPrice.size()];
+            for (int i = 0; i < other.size(); i++) {
+                str[i] = other.get(i);
+                pr[i] = otherPrice.get(i);
+            }
+            for (int i = 0; i < pr.length - 1; i++) {
+                for (int j = 0; j < pr.length - i - 1; j++) {
+                    if (pr[j] < pr[j + 1]) {
+                        double temp = pr[j];
+                        pr[j] = pr[j + 1];
+                        pr[j + 1] = temp;
+                        String t = str[j];
+                        str[j] = str[j + 1];
+                        str[j + 1] = t;
+                    }
+                }
+            }
+            System.out.println("Other:");
+            for (int i = 0; i < other.size(); i++) {
+                System.out.print(str[i]);
+                System.out.print(" $");
+                System.out.printf("%.2f\n", pr[i]);
+            }
+            System.out.print("Total sum: $");
+            System.out.printf("%.2f\n", totalOther);
+        }
+    }
+}
